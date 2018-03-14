@@ -41,11 +41,12 @@ def handle_room(room):
                 while True:
                         action = input("What will you do? \n")
                         action = action.lower()
+                        print ("")
                         if action == "look around":
                                 #When you look around this happens
                                 look = "yes"
                                 print ("You look around. The eerie silence crushes your eardrums. \
-You are standing in a stone room made of bricks.\n\n\
+You are standing in a stone room made of bricks.\n\
 There is a sockdrawer in the corner. The light in the other room seems miles away. \n")
                         elif "light" in action or "room" in action or "lamp" in action:
                                 return "light"
@@ -56,14 +57,19 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                             return "courtyard"
                         elif "inventory" in action:
                             print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
-                            print (", ".join(Va.inventory))
+                            if len(Va.inventory) != 0:
+                                print (", ".join(Va.inventory))
+                            else:
+                                print ("Your satchel is empty.")
+                            print ("")
                                 #breaking the loop and you walk into the next room
-                        elif "drawer" in action: #This includes "sockdrawer", since "sockdrawer" contains "drawer".
+                        elif "drawer" in action:
                                 print ("You approach the mystical drawer. It gives of an aura of adventure.\n")
                                 #Princess bride easter egg which will affect the story later
                                 while True:
                                         action = input ("What will you do?\n")
                                         action = action.lower()
+                                        print ("")
                                         if "open" in action:
                                                 if Va.drawer == "open":
                                                         if "The Princess Bride" in Va.inventory:
@@ -91,8 +97,11 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                                         print ("You try to grasp something abstract, but it slipped through your fingers. Try taking something that's more real.\n")
                                         elif "inventory" in action:
                                             print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
-                                            print (", ".join(Va.inventory))
-
+                                            if len(Va.inventory) != 0:
+                                                print (", ".join(Va.inventory))
+                                            else:
+                                                print ("Your satchel is empty.")
+                                            print ("")
                                         elif "inspect" in action or "look" in action:
                                                 if Va.drawer == "open":
                                                         print ("You take a closer look at the opened drawer. Seems like an ordinary sockdrawer, made of dark oak and passed down through generations. It reminds you of times past.\n")
@@ -137,40 +146,42 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                 while True:
                         action = input("What will you do? \n")
                         action = action.lower()
+                        print ("")
                         if action == "look around":
                                 look = "yes"
                                 if Va.taken == "no":
-                                        print("This room has three glowing stones with the colours blue, red and white, \
-lying on a flying pig. The pig looks happy, but is stuck in the air by an unknown force.\n")
+                                        print("This room has three glowing stones with the colours blue, red and white, lying on a flying pig. The pig looks happy, but is stuck in the air by an unknown force.\n")
                                         print ("There is a door opposite to the dark room. The door seems closed.")
 
                                 elif Va.taken == "yes" and "Kerosene Lamp" not in Va.inventory:
                                         print ("You look around. The room is lit up by a kerosene lamp.")
-                                        print ("The only things apart from that are two doors, one leading to the dark room and one leading to the unknown. You think you remember hearing a clicking sound.")
+                                        print ("The only things apart from that are two doors, one leading to the dark room and one leading to the unknown. \nYou remember hearing a clicking sound.")
                                 elif Va.taken == "yes" and "Kerosene Lamp" in Va.inventory:
                                         print ("You look around. The room is lit up by the kerosene lamp you hold.")
-                                        print ("The only things in the room are two doors, one leading to the dark room and one leading to the unknown. You think you remember hearing a clicking sound.")
+                                        print ("The only things in the room are two doors, one leading to the dark room and one leading to the unknown. \nYou remember hearing a clicking sound.")
                         elif "inventory" in action:
                                 print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
-                                print (", ".join(Va.inventory))
-                        elif "dark room" in action:
-                                print ("You go into the dark room.")
+                                if len(Va.inventory) != 0:
+                                    print (", ".join(Va.inventory))
+                                else:
+                                    print ("Your satchel is empty.")
+                                print ("")
+                        elif "dark room" in action or "back" in action:
+                                print ("You go into the dark room.\n")
                                 return "start"
-                        elif "back" in action:
-                                if Va.rooms[1] == "start":
-                                        print ("You go back into the dark room.")
-                                        return "start"
                         elif "pet" in action and "pig" in action:
-                                print("The pig seems pleased and oinks happily.")
+                                print("The pig seems pleased and oinks happily.\n")
                         elif action == "inspect":
-                                print ("You inspect the dust in the air.")
+                                print ("You inspect the dust in the air.\n")
+                        elif "take" in action and "pig" in action:
+                            print ("The pig is locked in place, you cannot take it with you. Even if you could move it, how would you fit it into your satchel?\n")
                         elif "pick" in action and "up" in action and "light" in action or "pick" in action and "up" in action and "lamp" in action:
                                 if "Kerosene Lamp" not in Va.inventory:
                                         print("You pick up the light.")
                                         Va.inventory.append("Kerosene Lamp") #Adds Kerosene Lamp to inventory.
                                 else:
                                         print ("You have already picked up the light.")
-                        elif "take" in action and "lamp" in action or "take" in action and "light" in action:
+                        elif "take" in action and "lamp" in action or "take" in action and "light" in action or "take" in action and "kerosene" in action:
                                 if "Kerosene Lamp" not in Va.inventory:
                                         print("You pick up the light.")
                                         Va.inventory.append("Kerosene Lamp")
@@ -180,13 +191,14 @@ lying on a flying pig. The pig looks happy, but is stuck in the air by an unknow
                                 if Va.taken== "yes":
                                         print ("The stones are no longer there to interact with.")
                                 else:
-                                        print("You touch the stones. \n\
-The blue stone shows you a vision of stars and it feels like you are in a completely different world. \n\
-The white stone makes you believe that you are the chosen and your faith is strong.\n\
-The red stone makes you visualize your strenght and brute force. You feel strong.")
+                                        print("\nYou touch the stones. \n\
+The blue stone shows you a vision of stars. You feel like you are in a completely different world. \n\
+The white stone tells you that you are chosen, special. Your faith is strong.\n\
+The red stone makes you visualize your strenght and brute force. Strenght pulses in your veins.")
                                         while True:
                                                 stone = input("\n\nPick up a stone of your chosing. \n") #Which stone you pick up.
                                                 stone = stone.lower()
+                                                print ("")
                                                 if "blue" in stone:
                                                         print ("You take the blue stone and put it in your satchel.")
                                                         Va.clas = classes[0] #Your proffession (class) becomes classes[0].
@@ -203,7 +215,7 @@ The red stone makes you visualize your strenght and brute force. You feel strong
                                                         Va.inventory.append("Fierce Stone")
                                                         break
                                                 else:
-                                                        print("Pick a stone of your chosing")
+                                                        print("''%s' is not a stone."%(stone))
                                         print("Just as you take the stone off the pig's back, the other stones vanish. You hear a clicking sound from the door.")
                                         Va.taken = "yes"
                         elif "take" in action: #If "take" in action and you have not typed "light" or "stones" too.
@@ -232,7 +244,7 @@ The red stone makes you visualize your strenght and brute force. You feel strong
 
         elif room == "hallway":
                 ####The door does not open if Va.rooms[1] == "courtyard", as it's possible you broke it and it gets repetetive!
-                if "hallway" in Va.allrooms:
+                if "courtyard" in Va.allrooms:
                     if Va.clas == classes[1]: #If your class is Warrior
                         print ("You enter the manor, passing by the dust that once was a majestic door.\n")
                     else:
@@ -242,14 +254,14 @@ The red stone makes you visualize your strenght and brute force. You feel strong
                     print("Just as you approach it, the door creaks open.")
                     time.sleep(a)
                     if "Kerosene Lamp" in Va.inventory:
-                            print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a hallway, illuminated only by your lamp. You can barely see the other end.")
+                            print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a hallway, \nilluminated only by your lamp. You can barely see the other end.")
                     else:
                             print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a pitch black hallway.")
                 while True:
                         forwards = "no"
                         action = input("What will you do? \n")
                         action = action.lower()
-                        print (action)
+                        print ("")
                         if "look" in action or "inspect" in action and "trap" not in action:
                                 look = "yes"
                                 if Va.rooms[1] == "light":
@@ -264,62 +276,67 @@ The red stone makes you visualize your strenght and brute force. You feel strong
                                     print ("You notice an open trapdoor infront of the door to the Pig Room. The space below is filled with spikes and sharp poles.\n")
                         elif "inventory" in action:
                                 print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
-                                print (", ".join(Va.inventory))
+                                if len(Va.inventory) != 0:
+                                    print (", ".join(Va.inventory))
+                                else:
+                                    print ("Your satchel is empty.")
+                                print ("")
                         elif "forward" in action or "further" in action or "courtyard" in action:#Man kunde inte skriva "elif "forward" or "further" in action:", det gjorde att alla block efter detta misslyckades.
                                 forwards = "yes"
                                 if "Kerosene Lamp" in Va.inventory:
                                     if "courtyard" not in Va.allrooms:
                                         if look == "yes":
-                                                print("You step around the trapdoor, thanking your gods that you took the lamp when you had the chance. \
-Making sure you don't activate any other traps, you make your way to the other end of the corridor.\n \
-You are met with an intimidating door. You stare at it. Its icy face stares back.")
+                                                print("You step around the trapdoor, thanking your gods that you took the lamp when you had the chance.")
+                                                print ("Making sure you don't activate any other traps, you make your way to the other end of the corridor.\n")
+                                                print ("You are met with an intimidating door. You stare at it. Its icy face stares back.\n")
                                                 time.sleep(c)
                                                 if Va.clas == classes[0]:
-                                                    print ("You let your hand wander into your satchel, touching the blue stone.")
+                                                    print ("Deep in thought on how to proceed, you let your hand wander into your satchel, touching the blue stone.")
                                                     time.sleep(b)
                                                     print ("-Mellon!")
                                                     time.sleep(b)
-                                                    print ("The door gives way to your powerful cry, revealing a dark night sky. What is up with this strange aura? You stumble outside and the door closes behind you.")
+                                                    print ("The door gives way to your powerful cry, revealing a dark night sky. \nWhat is up with this strange aura? You stumble outside and the door closes behind you.")
                                                     return "courtyard"
                                                 elif Va.clas == classes[2]:
-                                                    print ("You let your hand wander into your satchel, touching the white stone.")
+                                                    print ("Deep in thought on how to proceed, you let your hand wander into your satchel, touching the white stone.")
                                                     time.sleep(b)
                                                     print ("You close you eyes, whispering to the door: 'Open'.")
                                                     time.sleep(b)
-                                                    print ("The door gives way to your soft prayer, revealing a dark night sky. What is up with this strange aura?  You stumble outside and the door closes behind you")
+                                                    print ("The door gives way to your soft prayer, revealing a dark night sky. \nWhat is up with this strange aura?  You stumble outside and the door closes behind you.")
                                                     return "courtyard"
                                                 elif Va.clas == classes[1]:
-                                                    print ("You let your hand wander into your satchel, touching the red stone.")
+                                                    print ("Deep in thought on how to proceed, you let your hand wander into your satchel, touching the red stone.")
                                                     time.sleep(b)
                                                     print ("In a fit of rage, you lash out, releasing a flurry of punches at the door.")
                                                     time.sleep(b)
-                                                    print ("The now pulverized door gives way to your attack, revealing a dark night sky. What is up with this strange aura? You stumble outside and the door closes behind you")
+                                                    print ("The now pulverized door gives way to your attack, revealing a dark night sky. \nWhat is up with this strange aura? You stumble outside and the door closes behind you.")
                                                     return "courtyard"
                                         else:
-                                                print("You step forwards, suddenly jumping to the side as you notice a trapdoor just where you would have walked. You thank your gods that you took the lamp and saw the trapdoor \
-when you did. Taking great care not to activate any hidden traps, you make your way to the end of the hallway.\n \
-You are met with an intimidating door. You stare at it. It's icy face stares back.")
+                                                print("You step forwards, suddenly jumping to the side as you notice a trapdoor just where you would have walked.")
+                                                print ("You thank your gods that you took the lamp and saw the trapdoor when you did.\n")
+                                                print ("Taking great care not to activate any hidden traps, you make your way to the end of the hallway.\n")
+                                                print ("You are met with an intimidating door. You stare at it. It's icy face stares back.\n")
                                                 time.sleep(c)
                                                 if Va.clas == classes[0]:
-                                                    print ("You let your hand wander into your satchel, touching the blue stone.")
+                                                    print ("Deep in thought on how to proceed, you let your hand wander into your satchel, touching the blue stone.")
                                                     time.sleep(b)
                                                     print ("-Mellon!")
                                                     time.sleep(b)
-                                                    print ("The door gives way to your powerful cry, revealing a dark night sky. What is up with this strange aura? You stumble outside and the door closes behind you")
+                                                    print ("The door gives way to your powerful cry, revealing a dark night sky. \nWhat is up with this strange aura? You stumble outside and the door closes behind you.")
                                                     return "courtyard"
                                                 elif Va.clas == classes[2]:
-                                                    print ("You let your hand wander into your satchel, touching the white stone.")
+                                                    print ("Deep in thought on how to proceed, you let your hand wander into your satchel, touching the white stone.")
                                                     time.sleep(b)
                                                     print ("You close you eyes, whispering to the door: 'Open'.")
                                                     time.sleep(b)
-                                                    print ("The door gives way to your soft prayer, revealing a dark night sky. What is up with this strange aura? You stumble outside and the door closes behind you")
+                                                    print ("The door gives way to your soft prayer, revealing a dark night sky. \nWhat is up with this strange aura? You stumble outside and the door closes behind you.")
                                                     return "courtyard"
                                                 elif Va.clas == classes[1]:
-                                                    print ("You let your hand wander into your satchel, touching the red stone.")
+                                                    print ("Deep in thought on how to proceed, you let your hand wander into your satchel, touching the red stone.")
                                                     time.sleep(b)
                                                     print ("In a fit of rage, you lash out, releasing a flurry of punches at the door.")
                                                     time.sleep(b)
-                                                    print ("The now pulverized door gives way to your attack, revealing a dark night sky. What is up with this strange aura? You stumble outside and the door closes behind you")
+                                                    print ("The now pulverized door gives way to your attack, revealing a dark night sky. \nWhat is up with this strange aura? You stumble outside and the door closes behind you.")
                                                     return "courtyard"
                                     else:
                                         print ("You decide to go outside, to the courtyard. \n")
@@ -340,40 +357,54 @@ You are met with an intimidating door. You stare at it. It's icy face stares bac
                         else:
                             print("Huh, that didn´t do anything")
         elif room == "courtyard":
-            print("The garden you enter looks like it has not seen daylight in many years.")
+            print("The garden you enter looks like it has not seen daylight in decades.\n")
             while True:
-                action = input("What shall you do? ")
+                action = input("What will you do?\n") #Om vi vill ändra på frågan lite då och då tycker jag att vi antingen ändrar den radikalt eller ändrar den smått när något händer.
+                #Nu när man blir kidnappad är ett perfekt tillfälle.
                 action = action.lower()
+                print ("")
                 if action == "look around":
-                    print("The garden has a high metal fence surrounding it. It is filled with decomposing dead trees and the absence of flowers is striking. On the opposite side of the garden is a gate. \
-\nThe house, or rather the manor, is made of black wood and looks like it once belonged to a lord, but has since been abandoned. All you see outside the garden is a thick fog...")
-                elif "go to" and "gate" in action or "walk to" and "gate" in action:
+                    print("The garden has a high metal fence surrounding it. It is filled with decomposing dead trees and the absence of flowers is striking. On the opposite side of the garden is a gate.\n")
+                    print ("The house, or rather the manor, is made of black wood and looks like it once belonged to a lord, but has since been abandoned. All you see outside the garden is a thick fog...")
+                elif "go to" and "gate" in action or "walk to" and "gate" in action or "go" in action and "outside" in action or "leave" in action:
                     print ("You walk to the gate and you still only see fog outside of the fence.")
                     while True:
-                        yn = input("Want to open the gate? (y/n) ")
+                        yn = input("Want to open the gate? [Y/N]\n")
                         yn = yn.lower()
+                        print ("")
                         if "y" in yn:
                             return "fog"
                         elif "n" in yn:
                             break
                 elif "inventory" in action:
                         print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
-                        print (", ".join(Va.inventory))
+                        if len(Va.inventory) != 0:
+                            print (", ".join(Va.inventory))
+                        else:
+                            print ("Your satchel is empty.")
+                        print ("")
                 elif "back" in action:
                         print ("You decide to go back into the house.")
                         return Va.rooms[1]
                 else:
                     print ("Huh, that didn't do anything.") ## Add clueless?
         elif room == "fog":
-            print ("You pierce the fog. Slowly but surely, with every step you take, the fog dissapates. After an amount of steps uncountable to mere mortals, the fog is gone.\n\
-You turn around, expecting to see the manor's looming body, but you can only see dust, lingering for a moment until even the dust is gone.\n You hear a faint, hammering sound.")
+            print ("You pierce the fog. Slowly but surely, with every step you take, the fog dissapates.")
+            print ("After an amount of steps uncountable to mere mortals, the fog is gone.\n")
+            print ("You turn around, expecting to see the manor's looming body, but you can only see dust, lingering for a moment until even the dust is gone.\n\nYou hear a faint, hammering sound.\n")
             useless = input("A thunderous voice booms: What is your wish?\n")
-            print("The voice replies: '%s'?I'm not a genie. \nThe sound grows lowder."%(useless))
+            print ("")
+            useless = list(useless)
+            useless.insert(1,useless[0].upper())
+            useless.pop(0)
+            useless = "".join(useless)
+            #Make the first letter of useless into a upper case letter.
+            print("The voice replies: '%s'? I'm not a genie! \nThe sound grows lowder."%(useless))
             time.sleep(b)
             print ("Suddenly everything goes dark.")
             time.sleep(b)
         elif room == "death":
-                print ("Your journey has come to a tragic end.") #Man måste starta om spelet när man dör eller? Antingen det eller så finns det checkpoint
+                print ("Your journey has come to a tragic end.") #Man måste starta om spelet när man dör eller? Antingen det eller så finns det checkpoints
         else:
                 print ("Oops, room did not have a name. Returning to the last room you were in...")
                 time.sleep(3)
