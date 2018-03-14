@@ -232,14 +232,19 @@ The red stone makes you visualize your strenght and brute force. You feel strong
 
         elif room == "hallway":
                 ####The door does not open if Va.rooms[1] == "courtyard", as it's possible you broke it and it gets repetetive!
-                look = "no"
-                print("Just as you approach it, the door creaks open.")
-                time.sleep(a)
-                if "Kerosene Lamp" in Va.inventory:
-                        print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a hallway, \
-illuminated only by your lamp. You can barely see the other end.")
+                if "hallway" in Va.allrooms:
+                    if Va.clas == classes[1]: #If your class is Warrior
+                        print ("You enter the manor, passing by the dust that once was a majestic door.\n")
+                    else:
+                        print ("You enter the manor.")
                 else:
-                        print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a pitch black hallway.")
+                    look = "no"
+                    print("Just as you approach it, the door creaks open.")
+                    time.sleep(a)
+                    if "Kerosene Lamp" in Va.inventory:
+                            print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a hallway, illuminated only by your lamp. You can barely see the other end.")
+                    else:
+                            print ("You take a step forwards to take a look, but suddenly the door slams shut! You're pushed into a pitch black hallway.")
                 while True:
                         forwards = "no"
                         action = input("What will you do? \n")
