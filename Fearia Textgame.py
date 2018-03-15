@@ -32,6 +32,7 @@ def handle_room(room):
         b = 0
         c = 0
         if room == "start":
+                drawer = "closed"
                 clueless = 0
                 look = "no"
                 if "Kerosene Lamp" in Va.inventory:
@@ -48,8 +49,6 @@ def handle_room(room):
                                 print ("You look around. The eerie silence crushes your eardrums. \
 You are standing in a stone room made of bricks.\n\
 There is a sockdrawer in the corner. The light in the other room seems miles away. \n")
-                        elif "light" in action or "room" in action or "lamp" in action:
-                                return "light"
                         #elif action == "vi är bäst": dröm om at hoppa till vilket rum man vill
                             #inventory.append("Kerosene Lamp")#, "Mystic Stone", "The Princess Bride"
                             #return input("Enter room to teleport\n")
@@ -63,6 +62,11 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                 print ("Your satchel is empty.")
                             print ("")
                                 #breaking the loop and you walk into the next room
+                        elif "turn on" in action and "light" in action:
+                                print ("You look around to see if there is a light to turn on. There is none.")
+                                print ("There is, however, a light in the other, adjacent, room.\n")
+                        elif "light" in action or "adjacent" in action or "room" in action or "lamp" in action:
+                                return "light"
                         elif "drawer" in action:
                                 print ("You approach the mystical drawer. It gives of an aura of adventure.\n")
                                 #Princess bride easter egg which will affect the story later
@@ -71,7 +75,7 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                         action = action.lower()
                                         print ("")
                                         if "open" in action:
-                                                if Va.drawer == "open":
+                                                if drawer == "open":
                                                         if "The Princess Bride" in Va.inventory:
                                                                 print ("The drawer is already open. It is empty.")
                                                         else:
@@ -82,11 +86,9 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                                         print ("Tantalized, you open it and read the first passage you see:")
                                                         print ("Fencing, fighting, torture, revenge, giants, monsters, chases, escapes, true love and miracles!\n")
                                                         print ("It seems oddly relevant to your situation.")
-                                                        Va.drawer = "open"
-                                        elif "take" in action and "book" not in action:
-                                                print ("You try to grasp something abstract, but it slipped through your fingers. Try taking something that's more real.\n")
+                                                        drawer = "open"
                                         elif "take" in action and "book" in action:
-                                                if Va.drawer == "open":
+                                                if drawer == "open":
                                                         if "The Princess Bride" in Va.inventory:
                                                                  print ("You cannot take a book that is not there.")
                                                         else:
@@ -95,6 +97,8 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
 
                                                 else:
                                                         print ("You try to grasp something abstract, but it slipped through your fingers. Try taking something that's more real.\n")
+                                        elif "take" in action and "book" not in action:
+                                                print ("You try to grasp something abstract, but it slipped through your fingers. Try taking something that's more real.\n")
                                         elif "inventory" in action:
                                             print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
                                             if len(Va.inventory) != 0:
@@ -103,12 +107,13 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                                 print ("Your satchel is empty.")
                                             print ("")
                                         elif "inspect" in action or "look" in action:
-                                                if Va.drawer == "open":
+                                                if drawer == "open":
                                                         print ("You take a closer look at the opened drawer. Seems like an ordinary sockdrawer, made of dark oak and passed down through generations. It reminds you of times past.\n")
                                                 else:
                                                         print ("You take a closer look at the drawer. Seems like an ordinary sockdrawer, made of dark oak and passed down through generations. It reminds you of times past.\n")
                                         elif "back" in action or "leave" in action:
-                                                print ("You take a step back, to the center of the room.\n")
+                                                print ("You close the drawer and take a step back to the center of the room.\n")
+                                                drawer = "closed"
                                                 break
                                         else:
                                                 print ("If you've lost intrest, why don't you take a step back, instead of trying to do something implausible with the drawer.") #Instead of this, have so if you misstype it prints "seems like you have lost intrest. perhaps you shouold take a step back."
@@ -116,6 +121,8 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                 if Va.rooms[1] == "light":
                                         print ("You head back to the room you were in before.")
                                         return "light"
+                                else:
+                                    print ("You have only been in one room, you cannot go back yet.\n")
                         else:
                                 if look == "no":
                                         print("Huh, that didn´t do anything")
@@ -124,8 +131,8 @@ There is a sockdrawer in the corner. The light in the other room seems miles awa
                                         elif clueless >= 4 and clueless <= 10:
                                                 print("Express the urge")
                                         elif clueless >= 10:
-                                                print("Normal human behavior is: looking around, inspecting different objects and walking in different directions")
-                                                print ("Write something sensible.")
+                                                print("Normal human behavior is: looking around, inspecting different objects and walking in different directions.")
+                                                print ("Write something sensible.\n")
                                         clueless += 1
                                 else:
                                         if clueless < 3:
@@ -357,6 +364,7 @@ The red stone makes you visualize your strenght and brute force. Strenght pulses
                         else:
                             print("Huh, that didn´t do anything")
         elif room == "courtyard":
+            body = "unlooted"
             print("The garden you enter looks like it has not seen daylight in decades.\n")
             while True:
                 action = input("What will you do?\n") #Om vi vill ändra på frågan lite då och då tycker jag att vi antingen ändrar den radikalt eller ändrar den smått när något händer.
@@ -364,18 +372,26 @@ The red stone makes you visualize your strenght and brute force. Strenght pulses
                 action = action.lower()
                 print ("")
                 if action == "look around":
-                    print("The garden has a high metal fence surrounding it. It is filled with decomposing dead trees and the absence of flowers is striking. On the opposite side of the garden is a gate.\n")
-                    print ("The house, or rather the manor, is made of black wood and looks like it once belonged to a lord, but has since been abandoned. All you see outside the garden is a thick fog...")
+                    print("The garden has a high metal fence surrounding it. It is filled with decomposing dead trees and the absence of flowers stands out. On the opposite side of the garden is a gate.\n")
+                    print ("The house, or rather the manor, is made of black wood and looks like it once belonged to a lord, but has since been abandoned. All you see outside the garden is a thick fog...\n")
+                    print ("You see a man's decapitated body, lying on the floor next to his own severed head. A head, which at this time, has no name.")
+                    print ("'I know his name.' escapes your lips.\n")
                 elif "go to" and "gate" in action or "walk to" and "gate" in action or "go" in action and "outside" in action or "leave" in action:
-                    print ("You walk to the gate and you still only see fog outside of the fence.")
-                    while True:
-                        yn = input("Want to open the gate? [Y/N]\n")
-                        yn = yn.lower()
-                        print ("")
-                        if "y" in yn:
-                            return "fog"
-                        elif "n" in yn:
-                            break
+                    if body == "looted":
+                        print ("You walk to the gate and you still only see fog outside of the fence.")
+                        while True:
+                            yn = input("Want to open the gate? [Y/N]\n")
+                            yn = yn.lower()
+                            print ("")
+                            if "y" in yn:
+                                return "fog"
+                            elif "n" in yn:
+                                break
+                    else:
+                        print ("Perhaps you should look at the body first.")
+                elif "body" in action:
+                    body = "looted"
+                    print ("You loot the body.")
                 elif "inventory" in action:
                         print ("Inventory:                                   [%d/10][Satchel]" %(len(Va.inventory)))
                         if len(Va.inventory) != 0:
@@ -384,6 +400,9 @@ The red stone makes you visualize your strenght and brute force. Strenght pulses
                             print ("Your satchel is empty.")
                         print ("")
                 elif "back" in action:
+                    if body == "looted":
+                        print ("You try to open the door to the manor, but it's locked.")
+                    else:
                         print ("You decide to go back into the house.")
                         return Va.rooms[1]
                 else:
@@ -407,7 +426,7 @@ The red stone makes you visualize your strenght and brute force. Strenght pulses
                 print ("Your journey has come to a tragic end.") #Man måste starta om spelet när man dör eller? Antingen det eller så finns det checkpoints
         else:
                 print ("Oops, room did not have a name. Returning to the last room you were in...")
-                time.sleep(3)
+                time.sleep(3) #Should always be 3 and not c, since you don't want your computer to crash.
                 return Va.rooms[1]
 room = "start"
 while room != "end":
